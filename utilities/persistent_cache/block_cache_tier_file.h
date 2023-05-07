@@ -22,7 +22,7 @@
 #include "port/port.h"
 #include "util/crc32c.h"
 #include "util/mutexlock.h"
-
+#include <functional>
 // The io code path of persistent cache uses pipelined architecture
 //
 // client -> In Queue <-- BlockCacheTier --> Out Queue <-- Writer <--> Kernel
