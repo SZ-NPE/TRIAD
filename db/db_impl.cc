@@ -3014,6 +3014,11 @@ void DBImpl::MaybeScheduleFlushOrCompaction() {
     env_->Schedule(&DBImpl::BGWorkFlush, this, Env::Priority::HIGH, this);
   }
 
+  Log(InfoLogLevel::INFO_LEVEL, immutable_db_options_.info_log,
+        "Calling MaybeScheduleFlushOrCompaction: unscheduled_flushes_ %d, bg_flush_scheduled_ %d, "
+        "num_running_flushes_ %d,",
+        unscheduled_flushes_, bg_flush_scheduled_, num_running_flushes_);
+
   auto bg_compactions_allowed = BGCompactionsAllowed();
 
   // special case -- if max_background_flushes == 0, then schedule flush on a
@@ -3049,6 +3054,11 @@ void DBImpl::MaybeScheduleFlushOrCompaction() {
     env_->Schedule(&DBImpl::BGWorkCompaction, ca, Env::Priority::LOW, this,
                    &DBImpl::UnscheduleCallback);
   }
+
+  Log(InfoLogLevel::INFO_LEVEL, immutable_db_options_.info_log,
+        "Calling MaybeScheduleFlushOrCompaction: unscheduled_compactions_ %d, bg_compaction_scheduled_ %d, "
+        "num_running_compactions_ %d,",
+        unscheduled_compactions_, bg_compaction_scheduled_, num_running_compactions_);
 }
 
 void DBImpl::SchedulePurge() {
